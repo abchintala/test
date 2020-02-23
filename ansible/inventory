@@ -1,0 +1,16 @@
+[master]
+# master node ip address
+
+[worker]
+# worker node ip addresses
+
+[all]
+ansible_remote_user: ubuntu
+delete_kube_dns: false
+deploy_istio: true
+
+[master:vars]
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[worker:vars]
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'

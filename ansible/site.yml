@@ -1,0 +1,23 @@
+---
+- name: kubeadm print join command token and save it as a variable
+  hosts: master
+  remote_user: "{{ ansible_remote_user }}"
+  become: yes
+  become_method: sudo
+  command: "kubeadm token create --print-join-command"
+  register: token
+
+- set_fact:
+    token={{ token.stdout }}
+
+- debug: var=token
+  run_once: true
+
+- name: kubeadm join command for slave nodes
+  hosts: worker
+  remote_user: "{{ ansible_remote_user }}"
+  become: yes
+  become_method: sudo
+  command: "{{ token }}"
+
+- import_playbook: deploy_istio.yml
